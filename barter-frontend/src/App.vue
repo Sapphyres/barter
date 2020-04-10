@@ -44,6 +44,7 @@
       {
         label: '',
         icon: '',
+        divider: true,
       },
       {
         label: 'Log Out',

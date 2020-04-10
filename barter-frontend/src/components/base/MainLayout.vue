@@ -20,12 +20,14 @@
                 v-model="isDrawerOpen"
                 app
                 clipped
-                color="grey lighten-5"
+                dark
+                color="primary darken-1"
         >
             <v-list
                     v-if="items"
                     dense
-                    class="grey lighten-5"
+                    dark
+                    class="primary darken-1"
             >
                 <template v-for="(item, i) in items">
                     <v-row
@@ -34,7 +36,7 @@
                             align="center"
                     >
                         <v-col cols="12">
-                            <v-subheader v-if="item.heading">
+                            <v-subheader>
                                 {{ item.label }}
                             </v-subheader>
                         </v-col>
@@ -56,7 +58,7 @@
                             <v-icon>{{ item.icon }}</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title class="grey--text">
+                            <v-list-item-title>
                                 {{ item.label }}
                             </v-list-item-title>
                         </v-list-item-content>
