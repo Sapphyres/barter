@@ -41,6 +41,15 @@
         icon: 'fa-vial',
         externalUrl: 'https://docs.cypress.io/guides/references/best-practices.html',
       },
+      {
+        label: '',
+        icon: '',
+      },
+      {
+        label: 'Log Out',
+        icon: 'fa-eject',
+        action: 'UserModule/logOut',
+      },
     ];
   }
 </script>

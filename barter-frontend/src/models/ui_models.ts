@@ -5,4 +5,5 @@ export interface MenuItem {
   divider?: boolean;
   internalUrl?: string;
   externalUrl?: string;
+  action?: string;
 }

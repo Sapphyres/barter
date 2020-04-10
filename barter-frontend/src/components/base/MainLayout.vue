@@ -1,19 +1,23 @@
 <template>
-    <div id="barter-main-layout" class="main-layout">
+    <div class="main-layout">
         <v-app-bar
                 app
                 clipped-left
                 dark
                 color="primary"
         >
-            <v-app-bar-nav-icon dark @click="drawer = !drawer"/>
+            <v-app-bar-nav-icon v-if="isLoggedIn" dark @click="isDrawerOpen = !isDrawerOpen"/>
             <span class="title ml-3 mr-5">Barter</span>
             <v-spacer/>
+            <v-btn icon @click="isLoginFormOpen = true">
+                <v-icon>fa-user</v-icon>
+            </v-btn>
         </v-app-bar>
 
         <v-navigation-drawer
+                v-if="isLoggedIn"
                 class="main-layout__drawer"
-                v-model="drawer"
+                v-model="isDrawerOpen"
                 app
                 clipped
                 color="grey lighten-5"
@@ -46,7 +50,7 @@
                             :key="i"
                             link
                             :to="item.internalUrl ? item.internalUrl : null"
-                            @click="item.externalUrl ? clickItemHandler(item) : null"
+                            @click="item.externalUrl || item.action ? clickItemHandler(item) : null"
                     >
                         <v-list-item-action>
                             <v-icon>{{ item.icon }}</v-icon>
@@ -64,6 +68,10 @@
         <v-content>
             <slot></slot>
         </v-content>
+
+        <v-dialog v-model="isLoginFormOpen" width="unset">
+            <LogIn class="main-layout__login-form" @onCloseHandler="closePopup"></LogIn>
+        </v-dialog>
     </div>
 </template>
 
@@ -71,6 +79,9 @@
     .main-layout {
         .v-navigation-drawer__border {
             display: none!important;
+        }
+        &__login-form{
+            min-width: 300px;
         }
     }
 </style>
@@ -81,10 +92,22 @@
 <script lang="ts">
   import { Vue, Component, Prop } from 'vue-property-decorator';
   import { MenuItem } from '@/models/ui_models';
+  import { namespace } from 'vuex-class';
+  import LogIn from '@/components/LogIn.vue';
 
-  @Component({})
+  const user = namespace('UserModule');
+
+  @Component({
+    components: {
+      LogIn,
+    }
+  })
   export default class MainLayout extends Vue {
-    public drawer: boolean = true;
+    public isDrawerOpen: boolean = true;
+    public isLoginFormOpen: boolean = false;
+
+    @user.Getter
+    isLoggedIn!: boolean;
 
     @Prop(
       {
@@ -94,8 +117,17 @@
     items!: MenuItem[];
 
     public clickItemHandler(item: MenuItem): void {
-      if (item.externalUrl)
+      if (item.externalUrl) {
         window.open(item.externalUrl);
+      }
+      if (item.action) {
+        console.log(item.action)
+        this.$store.dispatch(item.action);
+      }
+    }
+
+    public closePopup(): void {
+      this.isLoginFormOpen = false;
     }
   }
 </script>
