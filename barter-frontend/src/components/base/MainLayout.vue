@@ -83,7 +83,8 @@
             display: none!important;
         }
         &__login-form{
-            min-width: 300px;
+            min-width: 400px;
+            max-width: 400px;
         }
     }
 </style>
@@ -95,13 +96,13 @@
   import { Vue, Component, Prop } from 'vue-property-decorator';
   import { MenuItem } from '@/models/ui_models';
   import { namespace } from 'vuex-class';
-  import LogIn from '@/components/LogIn.vue';
+  import AuthenticationForm from '@/components/AuthenticationForm.vue';
 
   const user = namespace('UserModule');
 
   @Component({
     components: {
-      LogIn,
+      LogIn: AuthenticationForm,
     }
   })
   export default class MainLayout extends Vue {
