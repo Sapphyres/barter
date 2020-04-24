@@ -7,8 +7,10 @@
                 color="primary"
         >
             <v-app-bar-nav-icon v-if="isLoggedIn" dark @click="isDrawerOpen = !isDrawerOpen"/>
-            <span class="title ml-3 mr-5">Barter</span>
+            <span class="title ml-3 mr-5 accent--text">Barter</span>
             <v-spacer/>
+            <span v-if="userCredentials && userCredentials.user && userCredentials.user.displayName"
+                  class="ml-3 mr-5 secondary--text font-weight-light shades--text">@{{userCredentials.user.displayName}}</span>
             <v-btn icon @click="isLoginFormOpen = true">
                 <v-icon>fa-user</v-icon>
             </v-btn>
@@ -36,7 +38,7 @@
                             align="center"
                     >
                         <v-col cols="12">
-                            <v-subheader>
+                            <v-subheader class="secondary--text">
                                 {{ item.label }}
                             </v-subheader>
                         </v-col>
@@ -80,9 +82,10 @@
 <style lang="scss">
     .main-layout {
         .v-navigation-drawer__border {
-            display: none!important;
+            display: none !important;
         }
-        &__login-form{
+
+        &__login-form {
             min-width: 400px;
             max-width: 400px;
         }
@@ -97,6 +100,7 @@
   import { MenuItem } from '@/models/ui_models';
   import { namespace } from 'vuex-class';
   import AuthenticationForm from '@/components/AuthenticationForm.vue';
+  import UserCredential = firebase.auth.UserCredential;
 
   const user = namespace('UserModule');
 
@@ -111,6 +115,9 @@
 
     @user.Getter
     isLoggedIn!: boolean;
+
+    @user.Getter
+    userCredentials!: UserCredential;
 
     @Prop(
       {

@@ -32,6 +32,17 @@
                 />
 
                 <v-text-field
+                        v-if="!hasAccount"
+                        v-model="displayName"
+                        id="displayName"
+                        label="Display Name"
+                        name="displayName"
+                        prepend-icon="fal fa-envelope-square"
+                        type="text"
+                        :rules="!hasAccount ? rulesUtility.displayNameRules : null"
+                />
+
+                <v-text-field
                         v-model="password"
                         id="password"
                         label="Password"
@@ -74,6 +85,7 @@
   import { Vue, Component, Emit } from 'vue-property-decorator';
   import { namespace } from 'vuex-class';
   import RuleUtility from '@/utils/rules';
+  import { UserLogin } from '@/models/user';
 
   const user = namespace('UserModule');
 
@@ -83,15 +95,16 @@
     private hasAccount: boolean = true;
     private isFormValid: boolean = false;
 
-    private email:string = 'mel@mel.mel';
-    private password:string = 'M3lm3lm3l';
-    private confirmPassword:string = 'M3lm3lm3l';
+    private email: string = 'mel@mel.mel';
+    private displayName: string = 'SuperMel';
+    private password: string = 'M3lm3lm3l';
+    private confirmPassword: string = 'M3lm3lm3l';
 
     @user.Action
-    logIn!: (email: string, password: string) => Promise<boolean>;
+    logIn!: (userLogin: UserLogin) => Promise<boolean>;
 
     @user.Action
-    createAccount!: (email: string, password: string) => Promise<boolean>;
+    createAccount!: (userLogin: UserLogin) => Promise<boolean>;
 
     @Emit('onCloseHandler')
     closeForm(): void {
@@ -108,12 +121,18 @@
     public async onSaveClick(): Promise<void> {
       let logged: boolean = false;
       this.isFormValid = (this.$refs.formAuth as Vue & { validate: () => boolean }).validate();
-      console.log('valid', this.isFormValid)
       if (this.isFormValid) {
         if (this.hasAccount) {
-          logged = await this.logIn('user', 'password');
+          logged = await this.logIn({
+            email: this.email,
+            password: this.password,
+          });
         } else {
-          logged = await this.createAccount(this.email, this.password);
+          logged = await this.createAccount({
+            email: this.email,
+            password: this.password,
+            displayName: this.displayName,
+          });
         }
       }
       if (logged) {

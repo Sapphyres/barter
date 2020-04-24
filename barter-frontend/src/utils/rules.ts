@@ -9,6 +9,12 @@ export default class Rules {
     (v: string) => !!v || 'This field is required',
   ];
 
+  public static displayNameRules: any[] = [
+    (v: string) => /^@?(\w){1,15}$/.test(v) ||
+      'Your display name cannot have more than 15 characters and must not contain any space',
+    (v: string) => !!v || 'This field is required',
+  ];
+
   public static phoneNumberRules: any[] = [
     (v: string) => !!v || 'The phone number is required',
     (v: string) => v.length === 10 || 'Phone number must be valid (ex. (123) 456 - 7890 )',

@@ -22,9 +22,14 @@
   export default class App extends Vue {
     public drawerItems: MenuItem[] = [
       {
-        label: 'Documentatiom',
+        label: 'Documentation',
         heading: true,
         icon: '',
+      },
+      {
+        label: 'Firebase',
+        icon: 'fa-google',
+        externalUrl: 'https://console.firebase.google.com/u/0/project/sapphyresbarter/overview',
       },
       {
         label: 'Vue Doc',
